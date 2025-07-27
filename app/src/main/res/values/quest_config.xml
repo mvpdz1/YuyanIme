@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Quest系统适配配置 -->
+    
+    <!-- 默认启用悬浮键盘模式 -->
+    <bool name="quest_default_floating_enabled">true</bool>
+    
+    <!-- Quest设备检测关键词 -->
+    <string-array name="quest_device_keywords">
+        <item>oculus</item>
+        <item>meta</item>
+        <item>quest</item>
+    </string-array>
+    
+    <!-- Quest系统优化设置 -->
+    <bool name="quest_disable_vibration">true</bool>
+    <bool name="quest_disable_sound">true</bool>
+    <item name="quest_keyboard_alpha" format="float" type="dimen">0.9</item>
+    
+    <!-- 悬浮键盘默认尺寸 -->
+    <integer name="quest_keyboard_width">900</integer>
+    <integer name="quest_keyboard_height">400</integer>
+    
+    <!-- 悬浮键盘默认位置 -->
+    <integer name="quest_keyboard_x">50</integer>
+    <integer name="quest_keyboard_y">80</integer>
+    
+    <!-- 悬浮键盘尺寸适配比例（相对于屏幕尺寸的百分比） -->
+    <item name="quest_keyboard_width_ratio" format="float" type="dimen">0.85</item>
+    <item name="quest_keyboard_height_ratio" format="float" type="dimen">0.5</item>
+    
+    <!-- 最小和最大尺寸限制 -->
+    <integer name="quest_keyboard_min_width">600</integer>
+    <integer name="quest_keyboard_max_width">1200</integer>
+    <integer name="quest_keyboard_min_height">300</integer>
+    <integer name="quest_keyboard_max_height">800</integer>
+</resources>

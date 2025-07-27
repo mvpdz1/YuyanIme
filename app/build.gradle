@@ -1,0 +1,120 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 35
+    defaultConfig {
+        applicationId "com.vr369.pinyin"
+        minSdk 23
+        targetSdk 35
+        versionCode Integer.valueOf(versionCodeDate())
+        versionName versionNameDate()
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', "x86", "x86_64"
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+
+        lintOptions {
+            abortOnError false
+        }
+    }
+    
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+            // Quest VR特殊配置
+            pickFirsts += ['**/libjnidispatch.so']
+        }
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/*.kotlin_module'
+    }
+
+    // 移除签名配置，使用默认debug签名
+    // signingConfigs {
+    //     release {
+    //         storeFile file("devdroid.jks")
+    //         storePassword "devdroid110"
+    //         keyAlias "devdroid"
+    //         keyPassword "devdroid110"
+    //         v1SigningEnabled true
+    //         v2SigningEnabled true
+    //     }
+    // }
+
+    //多渠道打包
+    flavorDimensions = ["default"]
+    productFlavors {
+        online {
+            dimension "default"
+            applicationIdSuffix  ".online"
+        }
+        offline {
+            dimension "default"
+          //  applicationIdSuffix  ".offline"
+        }
+    }
+
+    buildTypes {
+        release {
+            // 混淆
+            minifyEnabled true
+            shrinkResources true
+          //  applicationIdSuffix  ".release"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg'
+            signingConfig signingConfigs.debug
+            // 使用默认签名
+            // signingConfig signingConfigs.release
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            // 使用默认debug签名
+            // signingConfig signingConfigs.release
+        }
+
+    }
+    compileOptions {
+        sourceCompatibility 17
+        targetCompatibility 17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    namespace 'com.vr369'
+
+    android.applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
+            outputFileName = "yuyanIme_${versionCodeDate()}_${variant.getProductFlavors()[0].name}_${variant.buildType.name}.apk"   // offline      online
+        }
+    }
+}
+
+static def versionCodeDate() {
+    return new Date().format("yyyyMMddHH", TimeZone.getTimeZone("GMT+8"))
+}
+
+static def versionNameDate() {
+    return new Date().format("yyyyMMdd.HH", TimeZone.getTimeZone("GMT+8"))
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':yuyansdk')
+}
